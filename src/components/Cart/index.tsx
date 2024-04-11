@@ -24,6 +24,28 @@ export const formataPreco = (preco = 0) => {
     currency: 'BRL'
   }).format(preco)
 }
+
+const formatCEP = (value: string) => {
+  return value
+    .replace(/\D/g, '')
+    .replace(/^(\d{5})(\d)/, '$1-$2')
+    .slice(0, 9);
+};
+
+const formatCardNumber = (value: string) => {
+  const numericValue = value.replace(/\D/g, '');
+  const limitedValue = numericValue.slice(0, 16);
+  const formattedValue = limitedValue.replace(/(\d{4})(?=\d)/g, '$1 ');
+  return formattedValue;
+};
+
+
+
+const formatCVV = (value: string) => {
+  return value
+    .replace(/\D/g, '')
+    .slice(0, 3);
+};
   
 const Cart = () => {
 
@@ -212,7 +234,7 @@ const checkInput = (fieldName: string) => {
               <InputGroup>
                 <div>
                   <label htmlFor="CEP">CEP</label>
-                  <input type="text" name='CEP' id='CEP' onChange={form.handleChange}
+                  <input type="text" name='CEP' id='CEP' onChange={(e) => form.setFieldValue('CEP', formatCEP(e.target.value))}
                     onBlur={form.handleBlur} className={checkInput('CEP') ? 'error' : ''}/>
                 </div>
                 <div>
@@ -241,19 +263,19 @@ const checkInput = (fieldName: string) => {
               <InputGroup>
                 <div>
                   <label htmlFor="cardNumber">Número do cartão</label>
-                  <input type="number" name='cardNumber' id='cardNumber' onChange={form.handleChange}
+                  <input type="text" name='cardNumber' id='cardNumber' onChange={(e) => form.setFieldValue('cardNumber', formatCardNumber(e.target.value))}
                     onBlur={form.handleBlur} className={checkInput('cardNumber') ? 'error' : ''}/>
                 </div>
                 <div>
                   <label htmlFor="cvv">CVV</label>
-                  <input type="text" name='cvv' id='cvv' onChange={form.handleChange}
+                  <input type="text" name='cvv' id='cvv' onChange={(e) => form.setFieldValue('cvv', formatCVV(e.target.value))}
                     onBlur={form.handleBlur} className={checkInput('cvv') ? 'error' : ''}/>
                 </div>
               </InputGroup>
               <InputGroup>
                 <div>
                   <label htmlFor="expiresMonth">Mês de vencimento</label>
-                  <input type="text" name='expiresMonth' id='expiresMonth' onChange={form.handleChange}
+                  <input type="text" name='expiresMonth' id='expiresMonth'onChange={form.handleChange}
                     onBlur={form.handleBlur}  className={checkInput('expiresMonth') ? 'error' : ''}/>
                 </div>
                 <div>
